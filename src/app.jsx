@@ -27,7 +27,7 @@ const App = () => {
 
   return (
     <>
-      <header className="flex justify-between items-center py-[30px] px-4 bg-gray-400">
+      <header className="flex justify-between items-center py-[30px] px-4 bg-gray-400 shadow">
         <a href="/" className="text-sm font-extrabold text-white font-sans">Where in the worlds?</a>
         <div><span className="font-semibold text-xs text-white">Dark Mode</span></div>
       </header>
