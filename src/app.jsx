@@ -4,8 +4,11 @@ import { useEffect, useState } from "react"
 const App = () => {
   const [countries, setCountries] = useState([])
   const [search, setSearch] = useState('')
+  const [regionOption, setRegionOption] = useState('all')
 
-  const filteredCountries = countries.filter(({ name, capital, region }) => {
+  const filteredCountriesByRegion = countries
+    .filter(({ region }) => regionOption === 'all' ? true : region.toLowerCase() === regionOption)
+  const filteredCountries = filteredCountriesByRegion.filter(({ name, capital, region }) => {
     return `${name.common}${capital}${region}`.toLowerCase().includes(search.toLowerCase())
   })
 
@@ -32,6 +35,7 @@ const App = () => {
   }, [])
 
   const handleChangeSearch = (e) => setSearch(e.target.value)
+  const handleChangeRegion = (e) => setRegionOption(e.target.value)
 
   return (
     <>
@@ -47,10 +51,11 @@ const App = () => {
           </label>
           <div className="relative w-52">
             <CaretDown size={10} color="#ffffff" weight="bold" className="absolute top-[15px] right-[19px]" />
-            <select name="region" className="py-3 px-6 font-sans rounded-md  bg-gray-400 text-white text-xs outline-none w-full" defaultValue="0">
-              <option value="0" disabled hidden>Filter by Region</option>
+            <select value={regionOption} onChange={handleChangeRegion} name="region" className="py-3 px-6 font-sans rounded-md  bg-gray-400 text-white text-xs outline-none w-full">
+              <option value="all" disabled hidden>Filter by Region</option>
+              <option value="all">All</option>
               <option value="africa">Africa</option>
-              <option value="america">America</option>
+              <option value="americas">Americas</option>
               <option value="asia">Asia</option>
               <option value="europe">Europe</option>
               <option value="oceania">Oceania</option>
