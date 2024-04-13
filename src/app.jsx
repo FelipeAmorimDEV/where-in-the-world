@@ -3,12 +3,18 @@ import { useEffect, useState } from "react"
 
 const App = () => {
   const [countries, setCountries] = useState([])
+  const [search, setSearch] = useState('')
+
+  const filteredCountries = countries.filter(({ name, capital, region }) => {
+    return `${name.common}${capital}${region}`.toLowerCase().includes(search.toLowerCase())
+  })
 
   useEffect(() => {
     fetch('https://restcountries.com/v3.1/all')
       .then(r => r.json())
       .then(data => setCountries(data.map(countrie => (
         {
+          id: countrie.cca2,
           name: countrie.name,
           tld: countrie.tld,
           currencies: countrie.currencies,
@@ -25,6 +31,8 @@ const App = () => {
       .catch(error => alert(error.message))
   }, [])
 
+  const handleChangeSearch = (e) => setSearch(e.target.value)
+
   return (
     <>
       <header className="flex justify-between items-center py-[30px] px-4 bg-gray-400 shadow">
@@ -35,12 +43,12 @@ const App = () => {
         <header className="mt-6 mb-8 flex flex-col gap-10 px-4">
           <label className="relative">
             <MagnifyingGlass size={18} color="#ffffff" weight="bold" className="absolute top-[16px] left-[30px]" />
-            <input type="text" placeholder="Search for a country…" className="py-[14px] px-[74px] font-sans bg-gray-400 text-white outline-none rounded-md w-full" />
+            <input value={search} onChange={handleChangeSearch} type="text" placeholder="Search for a country…" className="py-[14px] px-[74px] font-sans bg-gray-400 text-white outline-none rounded-md w-full" />
           </label>
           <div className="relative w-52">
             <CaretDown size={10} color="#ffffff" weight="bold" className="absolute top-[15px] right-[19px]" />
-            <select name="region" className="py-3 px-6 font-sans rounded-md  bg-gray-400 text-white text-xs outline-none w-full">
-              <option value="" disabled selected hidden>Filter by Region</option>
+            <select name="region" className="py-3 px-6 font-sans rounded-md  bg-gray-400 text-white text-xs outline-none w-full" defaultValue="0">
+              <option value="0" disabled hidden>Filter by Region</option>
               <option value="africa">Africa</option>
               <option value="america">America</option>
               <option value="asia">Asia</option>
@@ -51,8 +59,8 @@ const App = () => {
         </header>
         <div className="countries">
           <ul className="grid justify-items-center gap-10 list-none">
-            {countries.map(country => (
-              <li key={country.capital} className="bg-gray-400 w-[264px] rounded-md overflow-hidden z-10">
+            {filteredCountries.map(country => (
+              <li key={country.id} className="bg-gray-400 w-[264px] rounded-md overflow-hidden z-10">
                 <img src={country.flags.png} alt={country.flags.alt} className="h-[160px] w-[264px]" />
                 <div className="px-6 pt-6 pb-11">
                   <h2 className="font-sans font-extrabold text-white text-lg mb-4">{country.name.common}</h2>
