@@ -51,27 +51,28 @@ const App = () => {
         </header>
         <div className="countries">
           <ul className="grid justify-items-center gap-10 list-none">
-            {Array.from({ length: 10 }).map((country, index) =>
-              <li key={index} className="bg-gray-400 w-[264px] rounded-md overflow-hidden z-10">
-                <img src="https://flagcdn.com/be.svg" alt="The flag of Belgium is composed of three equal vertical bands of black, yellow and red." className="h-[160px] w-[264px]" />
+            {countries.map(country => (
+              <li key={country.capital} className="bg-gray-400 w-[264px] rounded-md overflow-hidden z-10">
+                <img src={country.flags.png} alt={country.flags.alt} className="h-[160px] w-[264px]" />
                 <div className="px-6 pt-6 pb-11">
-                  <h2 className="font-sans font-extrabold text-white text-lg mb-4">Belgium</h2>
+                  <h2 className="font-sans font-extrabold text-white text-lg mb-4">{country.name.common}</h2>
                   <div className="text-white font-sans text-sm">
                     <p>
                       <span className="font-semibold">Population: </span>
-                      <span className="font-light">81,770,900</span>
+                      <span className="font-light">{country.population}</span>
                     </p>
                     <p>
                       <span className="font-semibold">Region: </span>
-                      <span className="font-light">Europe</span>
+                      <span className="font-light">{country.region}</span>
                     </p>
                     <p>
                       <span className="font-semibold">Capital: </span>
-                      <span className="font-light">Berlin</span>
+                      <span className="font-light">{country.capital}</span>
                     </p>
                   </div>
                 </div>
-              </li>)}
+              </li>)
+            )}
           </ul>
         </div>
       </div>
