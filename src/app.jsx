@@ -1,6 +1,30 @@
 import { CaretDown, MagnifyingGlass } from "@phosphor-icons/react"
+import { useEffect, useState } from "react"
 
 const App = () => {
+  const [countries, setCountries] = useState([])
+
+  useEffect(() => {
+    fetch('https://restcountries.com/v3.1/all')
+      .then(r => r.json())
+      .then(data => setCountries(data.map(countrie => (
+        {
+          name: countrie.name,
+          tld: countrie.tld,
+          currencies: countrie.currencies,
+          capital: countrie.capital,
+          region: countrie.region,
+          subRegion: countrie.subregion,
+          languages: countrie.languages,
+          borders: countrie.borders,
+          population: countrie.population,
+          continents: countrie.continents,
+          flags: countrie.flags
+        }
+      ))))
+      .catch(error => alert(error.message))
+  }, [])
+
   return (
     <>
       <header className="flex justify-between items-center py-[30px] px-4 bg-gray-400">
