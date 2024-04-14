@@ -83,7 +83,7 @@ const Home = () => {
 
   return (
     <div>
-      <header className="mt-6 mb-8 flex flex-col gap-10 px-4 lg:flex-row lg:justify-between">
+      <header className="mt-6 mb-8 flex flex-col gap-10 px-4 lg:flex-row lg:justify-between tablet:my-12 lg:px-[80px]">
         <label className="relative drop-shadow-4xl shadow-xl">
           <MagnifyingGlass size={18} weight="bold" className="absolute top-[16px] left-[30px] text-gray-900 dark:text-white" />
           <input value={search} onChange={handleChangeSearch} type="text" placeholder="Search for a country…" className="py-[14px] px-[74px] font-sans 
@@ -102,8 +102,8 @@ const Home = () => {
           </select>
         </div>
       </header>
-      <div className="countries">
-        <ul className="grid justify-items-center gap-10 list-none lg:grid-cols-4">
+      <div className="countries lg:px-[80px]">
+        <ul className="grid justify-items-center justify-center gap-10 list-none lg:grid-cols-4 laptop:grid-cols-[264px_264px_264px] laptop:gap-20 tablet:grid-cols-[264px_264px] tablet:gap-32">
           {loading && <h2 className="text-gray-900 dark:text-white font-bold text-2xl">{loading}</h2>}
           {!loading && filteredCountries.length === 0 && search.length > 0 &&
             <h2 className="font-sans font-bold text-red-500 ">No countries found...</h2>
@@ -169,17 +169,17 @@ const Country = () => {
   const currencies = Object.entries(countryData.currencies).reduce((acc, item) => [...acc, item[1].name], []).join(', ')
   return (
     <div className="px-7">
-      <header className="mt-10 rounded-sm mb-16">
+      <header className="mt-10 rounded-sm mb-16 lg:my-20">
         <button className="py-[6px] px-[24px] bg-white text-gray-900 dark:bg-gray-400 dark:text-white font-sans flex items-center gap-2 font-light drop-shadow-1xl shadow-xl" onClick={handleBackHome}>
           <ArrowLeft size={18} className="dark:text-white" />
           Back
         </button>
       </header>
-      <div className="grid">
-        <img src={countryData.flags.png} alt="The flag of Belgium is composed of three equal vertical bands of black, yellow and red." className="w-[320px] h-[229px] mb-11" />
-        <div className="country-data">
-          <h2 className="font-sans font-extrabold  text-gray-900 dark:text-white text-2xl mb-4">{countryData.name.common}</h2>
-          <div className="text-sm text-gray-900 dark:text-white flex flex-col gap-2 mb-8">
+      <div className="grid lg:grid-cols-[560px_574px] lg:items-center lg:gap-28 lg:mb-52 lg:justify-center">
+        <img src={countryData.flags.png} alt="The flag of Belgium is composed of three equal vertical bands of black, yellow and red." className="w-[320px] h-[229px] mb-11 lg:w-[560px] lg:h-[401px]" />
+        <div className="lg:grid lg:grid-cols-[auto,auto] w-[574px]">
+          <h2 className="font-sans font-extrabold  text-gray-900 dark:text-white text-2xl mb-4 lg:col-span-2 lg:mb-6 lg:text-3xl">{countryData.name.common}</h2>
+          <div className="text-sm text-gray-900 dark:text-white flex flex-col gap-2 mb-8 lg:mb-16 lg:text-base">
             <p>
               <span className="font-semibold">Native Name: </span>
               <span className="font-light">{countryData.name.nativeName[nativeName].common}</span>
@@ -201,7 +201,7 @@ const Country = () => {
               <span className="font-light">{countryData.capital}</span>
             </p>
           </div>
-          <div className="text-sm text-gray-900 dark:text-white flex flex-col gap-2 mb-8">
+          <div className="text-sm text-gray-900 dark:text-white flex flex-col gap-2 mb-8 lg:text-base">
             <p>
               <span className="font-semibold">Top Level Domain: </span>
               <span className="font-light">{countryData.tld}</span>
@@ -216,12 +216,12 @@ const Country = () => {
             </p>
           </div>
           {countryData.borders &&
-            <div className="border-countries">
-              <h3 className="font-semibold text-base text-gray-900 dark:text-white mb-4">Border Countries:</h3>
-              <ul className="grid grid-cols-3 gap-[10px] mb-16 text-center">
+            <div className="border-countries gap-4 lg:grid lg:grid-cols-[auto_auto] items-baseline col-span-2">
+              <h3 className="font-semibold text-base text-gray-900 dark:text-white mb-4 lg:mb-0">Border Countries:</h3>
+              <ul className="grid grid-cols-3 gap-[10px] mb-16 text-center  lg:mb-0 lg:flex lg:flex-wrap ">
                 {countryData.borders.map(country =>
                   <Link key={country} to={`/rest-countries/${country.toLowerCase()}`}>
-                    <li className="dark:bg-gray-400 text-gray-900 dark:text-white py-[6px] rounded-sm font-light text-xs">{country}</li>
+                    <li className="dark:bg-gray-400 text-gray-900 dark:text-white py-[6px] rounded-sm font-light text-xs lg:text-sm lg:w-[96px]">{country}</li>
                   </Link>
                 )}
               </ul>

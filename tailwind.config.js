@@ -6,6 +6,16 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    screens: {
+      'tablet': '800px',
+      // => @media (min-width: 640px) { ... }
+
+      'laptop': '1024px',
+      // => @media (min-width: 1024px) { ... }
+
+      'lg': '1280px',
+      // => @media (min-width: 1280px) { ... }
+    },
     dropShadow: {
       '1xl': '0 0 7px 0 rgba(0,0,0,0.29)',
       '3xl': '0 2px 4px 0 rgba(0,0,0,0.5)',
