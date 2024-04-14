@@ -1,12 +1,50 @@
-import { CaretDown, MagnifyingGlass, Moon } from "@phosphor-icons/react"
 import { useEffect, useState } from "react"
+import { createBrowserRouter, createRoutesFromElements, Route, Outlet, RouterProvider, Link, Navigate } from "react-router-dom"
+import { CaretDown, MagnifyingGlass, Moon } from "@phosphor-icons/react"
 
-const App = () => {
+
+
+const DefaultLayout = () => {
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') ?? 'white')
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.body.classList.add('dark')
+    }
+
+    if (theme === 'white') {
+      document.body.classList.remove('dark')
+    }
+
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
+  const handleToogleTheme = () => setTheme(prev => prev === 'dark' ? 'white' : 'dark')
+  return (
+    <>
+      <header className="flex justify-between items-center py-[30px] px-4 bg-white dark:bg-gray-400 drop-shadow-3xl">
+        <Link to="/" className="text-sm font-extrabold text-gray-900 dark:text-white font-sans">
+          Where in the worlds?
+        </Link>
+        <button onClick={handleToogleTheme} className="flex items-center gap-2">
+          <Moon
+            size={16}
+            color={theme === 'dark' ? '#fff' : '#111517'}
+            weight={theme === 'dark' ? 'fill' : 'bold'}
+          />
+          <span className="font-semibold text-xs text-gray-900 dark:text-white">Dark Mode</span>
+        </button>
+      </header>
+      <Outlet />
+    </>
+  )
+}
+
+const Home = () => {
   const [countries, setCountries] = useState([])
   const [search, setSearch] = useState('')
   const [regionOption, setRegionOption] = useState('all')
   const [loading, setLoading] = useState(null)
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') ?? 'white')
 
   const filteredCountriesByRegion = countries
     .filter(({ region }) => regionOption === 'all' ? true : region.toLowerCase() === regionOption)
@@ -38,46 +76,26 @@ const App = () => {
       .finally(() => setLoading(null))
   }, [])
 
-  useEffect(() => {
-    if (theme === 'dark') {
-      document.body.classList.add('dark')
-    }
 
-    if (theme === 'white') {
-      document.body.classList.remove('dark')
-    }
-
-    localStorage.setItem('theme', theme)
-  }, [theme])
 
   const handleChangeSearch = (e) => setSearch(e.target.value)
   const handleChangeRegion = (e) => setRegionOption(e.target.value)
-  const handleToogleTheme = () => setTheme(prev => prev === 'dark' ? 'white' : 'dark')
+
 
   const formatNumber = new Intl.NumberFormat('en-US')
 
   return (
     <>
-      <header className="flex justify-between items-center py-[30px] px-4 bg-white dark:bg-gray-400 drop-shadow-3xl">
-        <a href="/" className="text-sm font-extrabold text-gray-900 dark:text-white font-sans">Where in the worlds?</a>
-        <button onClick={handleToogleTheme} className="flex items-center gap-2">
-          <Moon
-            size={16}
-            color={theme === 'dark' ? '#fff' : '#111517'}
-            weight={theme === 'dark' ? 'fill' : 'bold'}
-          />
-          <span className="font-semibold text-xs text-gray-900 dark:text-white">Dark Mode</span>
-        </button>
-      </header>
+
       <div className="app">
         <header className="mt-6 mb-8 flex flex-col gap-10 px-4">
           <label className="relative drop-shadow-4xl">
-            <MagnifyingGlass size={18} color={theme === 'dark' ? '#fff' : '#111517'} weight="bold" className="absolute top-[16px] left-[30px]" />
+            <MagnifyingGlass size={18} weight="bold" className="absolute top-[16px] left-[30px] text-gray-900 dark:text-white" />
             <input value={search} onChange={handleChangeSearch} type="text" placeholder="Search for a country…" className="py-[14px] px-[74px] font-sans 
             bg-white text-gray-100 dark:bg-gray-400 dark:text-white outline-none rounded-md w-full" />
           </label>
           <div className="relative w-52">
-            <CaretDown size={10} color={theme === 'dark' ? '#fff' : '#111517'} weight="bold" className="absolute top-[15px] right-[19px]" />
+            <CaretDown size={10} weight="bold" className="absolute top-[15px] right-[19px] text-gray-900 dark:text-white" />
             <select value={regionOption} onChange={handleChangeRegion} name="region" className="py-3 px-6 font-sans rounded-md bg-white text-gray-900 dark:bg-gray-400 dark:text-white text-xs outline-none w-full drop-shadow-4xl">
               <option value="all" disabled hidden>Filter by Region</option>
               <option value="all">All</option>
@@ -122,6 +140,18 @@ const App = () => {
       </div>
     </>
   )
+
 }
+
+const routes = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<DefaultLayout />} >
+      <Route index element={<Navigate to="/rest-countries" />} />
+      <Route path="rest-countries" element={<Home />} />
+    </Route>
+  )
+)
+
+const App = () => <RouterProvider router={routes} />
 
 export { App }
