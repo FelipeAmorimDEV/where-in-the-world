@@ -22,22 +22,26 @@ const DefaultLayout = () => {
   const handleToogleTheme = () => setTheme(prev => prev === 'dark' ? 'white' : 'dark')
   return (
     <>
-      <header className="flex justify-between items-center py-[30px] px-4 bg-white dark:bg-gray-400 drop-shadow-3xl shadow-sm">
-        <Link to="/" className="text-sm font-extrabold text-gray-900 dark:text-white font-sans lg:text-2xl">
-          Where in the worlds?
-        </Link>
-        <button onClick={handleToogleTheme} className="flex items-center gap-2">
-          <Moon
-            size={16}
-            color={theme === 'dark' ? '#fff' : '#111517'}
-            weight={theme === 'dark' ? 'fill' : 'bold'}
-          />
-          <span className="font-semibold text-xs text-gray-900 dark:text-white lg:text-base">Dark Mode</span>
-        </button>
+      <header className="bg-white dark:bg-gray-400 drop-shadow-3xl shadow-sm" role="banner">
+        <div className="flex justify-between items-center py-[30px] px-4 lg:px-[80px] max-w-[1440px] mx-auto">
+          <nav role="navigation">
+            <Link to="/" className="text-sm font-extrabold text-gray-900 dark:text-white font-sans lg:text-2xl">
+              Where in the worlds?
+            </Link>
+          </nav>
+          <button onClick={handleToogleTheme} className="flex items-center gap-2">
+            <Moon
+              size={16}
+              color={theme === 'dark' ? '#fff' : '#111517'}
+              weight={theme === 'dark' ? 'fill' : 'bold'}
+            />
+            <span className="font-semibold text-xs text-gray-900 dark:text-white lg:text-base">Dark Mode</span>
+          </button>
+        </div >
       </header>
-      <div>
+      <main role="main">
         <Outlet />
-      </div>
+      </main>
     </>
   )
 }
@@ -82,32 +86,35 @@ const Home = () => {
   const handleChangeRegion = (e) => setRegionOption(e.target.value)
 
   return (
-    <div>
-      <header className="mt-6 mb-8 flex flex-col gap-10 px-4 lg:flex-row lg:justify-between tablet:my-12 lg:px-[80px]">
-        <label className="relative drop-shadow-4xl shadow-xl">
-          <MagnifyingGlass size={18} weight="bold" className="absolute top-[16px] left-[30px] text-gray-900 dark:text-white" />
-          <input value={search} onChange={handleChangeSearch} type="text" placeholder="Search for a country…" className="py-[14px] px-[74px] font-sans 
+    <>
+      <div className="max-w-[1440px] mx-auto">
+        <header className="mt-6 mb-8 flex flex-col gap-10 px-4 lg:flex-row lg:justify-between tablet:my-12 lg:px-[80px]">
+          <label className="relative drop-shadow-4xl shadow-xl" aria-label="search country by name">
+            <MagnifyingGlass size={18} weight="bold" className="absolute top-[16px] left-[30px] text-gray-900 dark:text-white" />
+            <input value={search} onChange={handleChangeSearch} type="text" placeholder="Search for a country…" className="py-[14px] px-[74px] font-sans 
             bg-white text-gray-900 dark:bg-gray-400 dark:text-white outline-none rounded-md w-full lg:w-[480px] text-xs lg:text-sm" />
-        </label>
-        <div className="relative w-52">
-          <CaretDown size={10} weight="bold" className="absolute top-[15px] right-[19px] text-gray-900 dark:text-white" />
-          <select value={regionOption} onChange={handleChangeRegion} name="region" className="py-3 px-6 font-sans rounded-md bg-white text-gray-900 dark:bg-gray-400 dark:text-white text-xs outline-none w-full drop-shadow-4xl shadow-xl lg:text-sm">
-            <option value="all" disabled hidden>Filter by Region</option>
-            <option value="all">All</option>
-            <option value="africa">Africa</option>
-            <option value="americas">Americas</option>
-            <option value="asia">Asia</option>
-            <option value="europe">Europe</option>
-            <option value="oceania">Oceania</option>
-          </select>
-        </div>
-      </header>
-      <div className="countries lg:px-[80px]">
-        <ul className="grid justify-items-center justify-center gap-10 list-none lg:grid-cols-4 laptop:grid-cols-[264px_264px_264px] laptop:gap-20 tablet:grid-cols-[264px_264px] tablet:gap-32">
-          {loading && <h2 className="text-gray-900 dark:text-white font-bold text-2xl">{loading}</h2>}
-          {!loading && filteredCountries.length === 0 && search.length > 0 &&
-            <h2 className="font-sans font-bold text-red-500 ">No countries found...</h2>
-          }
+          </label>
+          <div className="relative w-52">
+            <CaretDown size={10} weight="bold" className="absolute top-[15px] right-[19px] text-gray-900 dark:text-white" />
+            <select value={regionOption} onChange={handleChangeRegion} name="region" aria-label="filter by region" className="py-3 px-6 font-sans rounded-md bg-white text-gray-900 dark:bg-gray-400 dark:text-white text-xs outline-none w-full drop-shadow-4xl shadow-xl lg:text-sm">
+              <option value="all" disabled hidden>Filter by Region</option>
+              <option value="all">All</option>
+              <option value="africa">Africa</option>
+              <option value="americas">Americas</option>
+              <option value="asia">Asia</option>
+              <option value="europe">Europe</option>
+              <option value="oceania">Oceania</option>
+            </select>
+          </div>
+        </header>
+      </div>
+
+      <div>
+        {loading && <h2 className="text-gray-900 dark:text-white font-bold text-2xl text-center">{loading}</h2>}
+        {!loading && filteredCountries.length === 0 && search.length > 0 &&
+          <h2 className="font-sans font-bold text-red-500 text-center">No countries found...</h2>
+        }
+        <ul className="grid justify-items-center justify-center gap-10 list-none lg:grid-cols-4 laptop:grid-cols-[264px_264px_264px] laptop:gap-20 tablet:grid-cols-[264px_264px] tablet:gap-32 lg:px-[80px] max-w-[1440px] mx-auto">
           {filteredCountries.map(country => (
             <Link key={country.id} to={country.id.toLowerCase()}>
               <li className="bg-white dark:bg-gray-400 w-[264px] rounded-md overflow-hidden drop-shadow-5xl">
@@ -135,7 +142,7 @@ const Home = () => {
           )}
         </ul>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -176,7 +183,7 @@ const Country = () => {
         </button>
       </header>
       <div className="grid lg:grid-cols-[560px_574px] lg:items-center lg:gap-28 lg:mb-52 lg:justify-center">
-        <img src={countryData.flags.png} alt="The flag of Belgium is composed of three equal vertical bands of black, yellow and red." className="w-[320px] h-[229px] mb-11 lg:w-[560px] lg:h-[401px]" />
+        <img src={countryData.flags.png} alt={countryData.flags.alt} className="w-[320px] h-[229px] mb-11 lg:w-[560px] lg:h-[401px]" />
         <div className="lg:grid lg:grid-cols-[auto,auto] w-[574px]">
           <h2 className="font-sans font-extrabold  text-gray-900 dark:text-white text-2xl mb-4 lg:col-span-2 lg:mb-6 lg:text-3xl">{countryData.name.common}</h2>
           <div className="text-sm text-gray-900 dark:text-white flex flex-col gap-2 mb-8 lg:mb-16 lg:text-base">
