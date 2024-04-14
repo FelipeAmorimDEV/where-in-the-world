@@ -6,7 +6,7 @@ const App = () => {
   const [search, setSearch] = useState('')
   const [regionOption, setRegionOption] = useState('all')
   const [loading, setLoading] = useState(null)
-  const [theme, setTheme] = useState('white')
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') ?? 'white')
 
   const filteredCountriesByRegion = countries
     .filter(({ region }) => regionOption === 'all' ? true : region.toLowerCase() === regionOption)
@@ -38,12 +38,21 @@ const App = () => {
       .finally(() => setLoading(null))
   }, [])
 
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.body.classList.add('dark')
+    }
+
+    if (theme === 'white') {
+      document.body.classList.remove('dark')
+    }
+
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
   const handleChangeSearch = (e) => setSearch(e.target.value)
   const handleChangeRegion = (e) => setRegionOption(e.target.value)
-  const handleToogleTheme = () => {
-    document.body.classList.toggle('dark')
-    setTheme(prev => prev === 'dark' ? 'white' : 'dark')
-  }
+  const handleToogleTheme = () => setTheme(prev => prev === 'dark' ? 'white' : 'dark')
 
   const formatNumber = new Intl.NumberFormat('en-US')
 
