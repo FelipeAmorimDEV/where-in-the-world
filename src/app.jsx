@@ -26,7 +26,7 @@ const DefaultLayout = () => {
         <div className="flex justify-between items-center py-[30px] px-4 lg:px-[80px] max-w-[1440px] mx-auto">
           <nav role="navigation">
             <Link to="/" className="text-sm font-extrabold text-gray-900 dark:text-white font-sans lg:text-2xl">
-              Where in the worlds?
+              <h1>Where in the worlds?</h1>
             </Link>
           </nav>
           <button onClick={handleToogleTheme} className="flex items-center gap-2">
@@ -116,9 +116,9 @@ const Home = () => {
         }
         <ul className="grid justify-items-center justify-center gap-10 list-none lg:grid-cols-4 laptop:grid-cols-[264px_264px_264px] laptop:gap-20 tablet:grid-cols-[264px_264px] tablet:gap-32 lg:px-[80px] max-w-[1440px] mx-auto">
           {filteredCountries.map(country => (
-            <Link key={country.id} to={country.id.toLowerCase()}>
-              <li className="bg-white dark:bg-gray-400 w-[264px] rounded-md overflow-hidden drop-shadow-5xl">
-                <img src={country.flags.png} alt={country.flags.alt} className="h-[160px] w-[264px]" />
+            <li key={country.id} className="bg-white dark:bg-gray-400 w-[264px] rounded-md overflow-hidden drop-shadow-5xl">
+              <Link to={country.id.toLowerCase()}>
+                <img src={country.flags.png} alt={country.flags.alt ?? `${country.name.common} flag`} className="h-[160px] w-[264px]" />
                 <div className="px-6 pt-6 pb-11 text-gray-900 dark:text-white">
                   <h2 className="font-sans font-extrabold text-lg mb-4">{country.name.common}</h2>
                   <div className="font-sans text-sm">
@@ -136,8 +136,8 @@ const Home = () => {
                     </p>
                   </div>
                 </div>
-              </li>
-            </Link>
+              </Link>
+            </li>
           )
           )}
         </ul>
@@ -183,7 +183,7 @@ const Country = () => {
         </button>
       </header>
       <div className="grid lg:grid-cols-[560px_574px] lg:items-center lg:gap-28 lg:mb-52 lg:justify-center">
-        <img src={countryData.flags.png} alt={countryData.flags.alt} className="w-[320px] h-[229px] mb-11 lg:w-[560px] lg:h-[401px]" />
+        <img src={countryData.flags.png} alt={countryData.flags.alt ?? `${countryData.name.common} flag`} className="w-[320px] h-[229px] mb-11 lg:w-[560px] lg:h-[401px]" />
         <div className="lg:grid lg:grid-cols-[auto,auto] w-[574px]">
           <h2 className="font-sans font-extrabold  text-gray-900 dark:text-white text-2xl mb-4 lg:col-span-2 lg:mb-6 lg:text-3xl">{countryData.name.common}</h2>
           <div className="text-sm text-gray-900 dark:text-white flex flex-col gap-2 mb-8 lg:mb-16 lg:text-base">
