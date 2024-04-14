@@ -7,7 +7,7 @@ export default {
   ],
   theme: {
     dropShadow: {
-      '1xl': '0 0 7px 2px rgba(0,0,0,0.2)',
+      '1xl': '0 0 7px 0 rgba(0,0,0,0.29)',
       '3xl': '0 2px 4px 0 rgba(0,0,0,0.5)',
       '4xl': '0 2px 9px 0 rgba(0,0,0,0.5)',
       '5xl': '0 0 7px 2px rgba(0,0,0,0.5)'
