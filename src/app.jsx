@@ -40,6 +40,8 @@ const App = () => {
   const handleChangeSearch = (e) => setSearch(e.target.value)
   const handleChangeRegion = (e) => setRegionOption(e.target.value)
 
+  const formatNumber = new Intl.NumberFormat('en-US')
+
   return (
     <>
       <header className="flex justify-between items-center py-[30px] px-4 bg-gray-400 shadow">
@@ -79,7 +81,7 @@ const App = () => {
                   <div className="text-white font-sans text-sm">
                     <p>
                       <span className="font-semibold">Population: </span>
-                      <span className="font-light">{country.population}</span>
+                      <span className="font-light">{formatNumber.format(country.population)}</span>
                     </p>
                     <p>
                       <span className="font-semibold">Region: </span>
