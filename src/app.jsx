@@ -116,7 +116,7 @@ const Home = () => {
         }
         <ul className="grid justify-items-center justify-center gap-10 list-none lg:grid-cols-4 laptop:grid-cols-[264px_264px_264px] laptop:gap-20 tablet:grid-cols-[264px_264px] tablet:gap-22 lg:px-[80px] max-w-[1440px] mx-auto">
           {filteredCountries.map(country => (
-            <li key={country.id} className="bg-white dark:bg-gray-400 w-[264px] rounded-md overflow-hidden drop-shadow-5xl">
+            <li key={country.id} className="bg-white dark:bg-gray-400 w-[264px] rounded-md overflow-hidden drop-shadow-5xl hover:-translate-y-5 hover:transition-all">
               <Link to={country.id.toLowerCase()}>
                 <img src={country.flags.png} alt={country.flags.alt ?? `${country.name.common} flag`} className="h-[160px] w-[264px]" />
                 <div className="px-6 pt-6 pb-11 text-gray-900 dark:text-white">
