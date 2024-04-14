@@ -1,4 +1,4 @@
-import { CaretDown, MagnifyingGlass } from "@phosphor-icons/react"
+import { CaretDown, MagnifyingGlass, Moon } from "@phosphor-icons/react"
 import { useEffect, useState } from "react"
 
 const App = () => {
@@ -6,6 +6,7 @@ const App = () => {
   const [search, setSearch] = useState('')
   const [regionOption, setRegionOption] = useState('all')
   const [loading, setLoading] = useState(null)
+  const [theme, setTheme] = useState('dark')
 
   const filteredCountriesByRegion = countries
     .filter(({ region }) => regionOption === 'all' ? true : region.toLowerCase() === regionOption)
@@ -39,6 +40,7 @@ const App = () => {
 
   const handleChangeSearch = (e) => setSearch(e.target.value)
   const handleChangeRegion = (e) => setRegionOption(e.target.value)
+  const handleToogleTheme = () => setTheme(prev => prev === 'dark' ? 'white' : 'dark')
 
   const formatNumber = new Intl.NumberFormat('en-US')
 
@@ -46,7 +48,14 @@ const App = () => {
     <>
       <header className="flex justify-between items-center py-[30px] px-4 bg-gray-400 shadow">
         <a href="/" className="text-sm font-extrabold text-white font-sans">Where in the worlds?</a>
-        <div><span className="font-semibold text-xs text-white">Dark Mode</span></div>
+        <button onClick={handleToogleTheme} className="flex items-center gap-2">
+          <Moon
+            size={16}
+            color={theme === 'dark' ? '#fff' : '#111517'}
+            weight={theme === 'dark' ? 'fill' : 'bold'}
+          />
+          <span className="font-semibold text-xs text-white">Dark Mode</span>
+        </button>
       </header>
       <div className="app">
         <header className="mt-6 mb-8 flex flex-col gap-10 px-4">
