@@ -23,7 +23,7 @@ const DefaultLayout = () => {
   return (
     <>
       <header className="flex justify-between items-center py-[30px] px-4 bg-white dark:bg-gray-400 drop-shadow-3xl shadow-sm">
-        <Link to="/" className="text-sm font-extrabold text-gray-900 dark:text-white font-sans">
+        <Link to="/" className="text-sm font-extrabold text-gray-900 dark:text-white font-sans lg:text-2xl">
           Where in the worlds?
         </Link>
         <button onClick={handleToogleTheme} className="flex items-center gap-2">
@@ -32,7 +32,7 @@ const DefaultLayout = () => {
             color={theme === 'dark' ? '#fff' : '#111517'}
             weight={theme === 'dark' ? 'fill' : 'bold'}
           />
-          <span className="font-semibold text-xs text-gray-900 dark:text-white">Dark Mode</span>
+          <span className="font-semibold text-xs text-gray-900 dark:text-white lg:text-base">Dark Mode</span>
         </button>
       </header>
       <div>
@@ -83,15 +83,15 @@ const Home = () => {
 
   return (
     <div>
-      <header className="mt-6 mb-8 flex flex-col gap-10 px-4">
+      <header className="mt-6 mb-8 flex flex-col gap-10 px-4 lg:flex-row lg:justify-between">
         <label className="relative drop-shadow-4xl shadow-xl">
           <MagnifyingGlass size={18} weight="bold" className="absolute top-[16px] left-[30px] text-gray-900 dark:text-white" />
           <input value={search} onChange={handleChangeSearch} type="text" placeholder="Search for a country…" className="py-[14px] px-[74px] font-sans 
-            bg-white text-gray-900 dark:bg-gray-400 dark:text-white outline-none rounded-md w-full" />
+            bg-white text-gray-900 dark:bg-gray-400 dark:text-white outline-none rounded-md w-full lg:w-[480px] text-xs lg:text-sm" />
         </label>
         <div className="relative w-52">
           <CaretDown size={10} weight="bold" className="absolute top-[15px] right-[19px] text-gray-900 dark:text-white" />
-          <select value={regionOption} onChange={handleChangeRegion} name="region" className="py-3 px-6 font-sans rounded-md bg-white text-gray-900 dark:bg-gray-400 dark:text-white text-xs outline-none w-full drop-shadow-4xl shadow-xl">
+          <select value={regionOption} onChange={handleChangeRegion} name="region" className="py-3 px-6 font-sans rounded-md bg-white text-gray-900 dark:bg-gray-400 dark:text-white text-xs outline-none w-full drop-shadow-4xl shadow-xl lg:text-sm">
             <option value="all" disabled hidden>Filter by Region</option>
             <option value="all">All</option>
             <option value="africa">Africa</option>
@@ -103,7 +103,7 @@ const Home = () => {
         </div>
       </header>
       <div className="countries">
-        <ul className="grid justify-items-center gap-10 list-none">
+        <ul className="grid justify-items-center gap-10 list-none lg:grid-cols-4">
           {loading && <h2 className="text-gray-900 dark:text-white font-bold text-2xl">{loading}</h2>}
           {!loading && filteredCountries.length === 0 && search.length > 0 &&
             <h2 className="font-sans font-bold text-red-500 ">No countries found...</h2>
