@@ -25,7 +25,7 @@ const DefaultLayout = () => {
       <header className="bg-white dark:bg-gray-400 drop-shadow-3xl shadow-sm" role="banner">
         <div className="flex justify-between items-center py-[30px] px-4 lg:px-[80px] max-w-[1440px] mx-auto">
           <nav role="navigation">
-            <Link to="/" className="text-sm font-extrabold text-gray-900 dark:text-white font-sans lg:text-2xl">
+            <Link to="/" className="text-sm font-extrabold text-gray-900 dark:text-white font-sans tablet:text-2xl">
               <h1>Where in the worlds?</h1>
             </Link>
           </nav>
@@ -35,7 +35,7 @@ const DefaultLayout = () => {
               color={theme === 'dark' ? '#fff' : '#111517'}
               weight={theme === 'dark' ? 'fill' : 'bold'}
             />
-            <span className="font-semibold text-xs text-gray-900 dark:text-white lg:text-base">Dark Mode</span>
+            <span className="font-semibold text-xs text-gray-900 dark:text-white tablet:text-base">Dark Mode</span>
           </button>
         </div >
       </header>
@@ -92,11 +92,11 @@ const Home = () => {
           <label className="relative drop-shadow-4xl shadow-xl" aria-label="search country by name">
             <MagnifyingGlass size={18} weight="bold" className="absolute top-[16px] left-[30px] text-gray-900 dark:text-white" />
             <input value={search} onChange={handleChangeSearch} type="text" placeholder="Search for a country…" className="py-[14px] px-[74px] font-sans 
-            bg-white text-gray-900 dark:bg-gray-400 dark:text-white outline-none rounded-md w-full lg:w-[480px] text-xs lg:text-sm" />
+            bg-white text-gray-900 dark:bg-gray-400 dark:text-white outline-none rounded-md w-full lg:w-[480px] text-xs tablet:text-sm" />
           </label>
           <div className="relative w-52">
             <CaretDown size={10} weight="bold" className="absolute top-[15px] right-[19px] text-gray-900 dark:text-white" />
-            <select value={regionOption} onChange={handleChangeRegion} name="region" aria-label="filter by region" className="py-3 px-6 font-sans rounded-md bg-white text-gray-900 dark:bg-gray-400 dark:text-white text-xs outline-none w-full drop-shadow-4xl shadow-xl lg:text-sm">
+            <select value={regionOption} onChange={handleChangeRegion} name="region" aria-label="filter by region" className="py-3 px-6 font-sans rounded-md bg-white text-gray-900 dark:bg-gray-400 dark:text-white text-xs outline-none w-full drop-shadow-4xl shadow-xl tablet:text-sm">
               <option value="all" disabled hidden>Filter by Region</option>
               <option value="all">All</option>
               <option value="africa">Africa</option>
@@ -114,7 +114,7 @@ const Home = () => {
         {!loading && filteredCountries.length === 0 && search.length > 0 &&
           <h2 className="font-sans font-bold text-red-500 text-center">No countries found...</h2>
         }
-        <ul className="grid justify-items-center justify-center gap-10 list-none lg:grid-cols-4 laptop:grid-cols-[264px_264px_264px] laptop:gap-20 tablet:grid-cols-[264px_264px] tablet:gap-32 lg:px-[80px] max-w-[1440px] mx-auto">
+        <ul className="grid justify-items-center justify-center gap-10 list-none lg:grid-cols-4 laptop:grid-cols-[264px_264px_264px] laptop:gap-20 tablet:grid-cols-[264px_264px] tablet:gap-22 lg:px-[80px] max-w-[1440px] mx-auto">
           {filteredCountries.map(country => (
             <li key={country.id} className="bg-white dark:bg-gray-400 w-[264px] rounded-md overflow-hidden drop-shadow-5xl">
               <Link to={country.id.toLowerCase()}>
