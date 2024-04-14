@@ -76,17 +76,13 @@ const Home = () => {
       .finally(() => setLoading(null))
   }, [])
 
-
-
   const handleChangeSearch = (e) => setSearch(e.target.value)
   const handleChangeRegion = (e) => setRegionOption(e.target.value)
-
 
   const formatNumber = new Intl.NumberFormat('en-US')
 
   return (
     <>
-
       <div className="app">
         <header className="mt-6 mb-8 flex flex-col gap-10 px-4">
           <label className="relative drop-shadow-4xl">
@@ -140,7 +136,66 @@ const Home = () => {
       </div>
     </>
   )
+}
 
+const Country = () => {
+  return (
+    <div>
+      <header>
+        <button>Back</button>
+      </header>
+      <div className="country">
+        <img src="https://flagcdn.com/w320/be.png" alt="The flag of Belgium is composed of three equal vertical bands of black, yellow and red." />
+        <div className="country-data">
+          <h2>Belgium</h2>
+          <div className="data-1">
+            <p>
+              <span>Native Name:</span>
+              <span>België</span>
+            </p>
+            <p>
+              <span>Population:</span>
+              <span>11,319,511</span>
+            </p>
+            <p>
+              <span>Region:</span>
+              <span>Europe</span>
+            </p>
+            <p>
+              <span>Sub Region:</span>
+              <span>Western Europe</span>
+            </p>
+            <p>
+              <span>Capital:</span>
+              <span>Brussels</span>
+            </p>
+          </div>
+          <div className="data-2">
+            <p>
+              <span>Top Level Domain:</span>
+              <span>.be</span>
+            </p>
+            <p>
+              <span>Currencies:</span>
+              <span>Euro</span>
+            </p>
+            <p>
+              <span>Languages:</span>
+              <span>Dutch, French, German</span>
+            </p>
+          </div>
+          <div className="border-countries">
+            <h3>Border Countries:</h3>
+            <ul>
+              <li>France</li>
+              <li>Germany</li>
+              <li>Netherlands</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 const routes = createBrowserRouter(
@@ -148,6 +203,7 @@ const routes = createBrowserRouter(
     <Route path="/" element={<DefaultLayout />} >
       <Route index element={<Navigate to="/rest-countries" />} />
       <Route path="rest-countries" element={<Home />} />
+      <Route path="rest-countries/:id" element={<Country />} />
     </Route>
   )
 )
