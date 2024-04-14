@@ -5,6 +5,7 @@ const App = () => {
   const [countries, setCountries] = useState([])
   const [search, setSearch] = useState('')
   const [regionOption, setRegionOption] = useState('all')
+  const [loading, setLoading] = useState(null)
 
   const filteredCountriesByRegion = countries
     .filter(({ region }) => regionOption === 'all' ? true : region.toLowerCase() === regionOption)
@@ -13,6 +14,7 @@ const App = () => {
   })
 
   useEffect(() => {
+    setLoading('Loading...')
     fetch('https://restcountries.com/v3.1/all')
       .then(r => r.json())
       .then(data => setCountries(data.map(countrie => (
@@ -32,6 +34,7 @@ const App = () => {
         }
       ))))
       .catch(error => alert(error.message))
+      .finally(() => setLoading(null))
   }, [])
 
   const handleChangeSearch = (e) => setSearch(e.target.value)
@@ -64,6 +67,10 @@ const App = () => {
         </header>
         <div className="countries">
           <ul className="grid justify-items-center gap-10 list-none">
+            {loading && <h2 className="text-white font-bold text-2xl">{loading}</h2>}
+            {!loading && filteredCountries.length === 0 && search.length > 0 &&
+              <h2 className="font-sans font-bold text-red-500 ">No countries found...</h2>
+            }
             {filteredCountries.map(country => (
               <li key={country.id} className="bg-gray-400 w-[264px] rounded-md overflow-hidden z-10">
                 <img src={country.flags.png} alt={country.flags.alt} className="h-[160px] w-[264px]" />
