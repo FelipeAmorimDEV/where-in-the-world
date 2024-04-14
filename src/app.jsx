@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
-import { createBrowserRouter, createRoutesFromElements, Route, Outlet, RouterProvider, Link, Navigate } from "react-router-dom"
+import { createBrowserRouter, createRoutesFromElements, Route, Outlet, RouterProvider, Link, Navigate, useLoaderData, useNavigate } from "react-router-dom"
 import { ArrowLeft, CaretDown, MagnifyingGlass, Moon } from "@phosphor-icons/react"
+
+const formatNumber = new Intl.NumberFormat('en-US')
 
 const DefaultLayout = () => {
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') ?? 'white')
@@ -79,8 +81,6 @@ const Home = () => {
   const handleChangeSearch = (e) => setSearch(e.target.value)
   const handleChangeRegion = (e) => setRegionOption(e.target.value)
 
-  const formatNumber = new Intl.NumberFormat('en-US')
-
   return (
     <div>
       <header className="mt-6 mb-8 flex flex-col gap-10 px-4">
@@ -109,26 +109,29 @@ const Home = () => {
             <h2 className="font-sans font-bold text-red-500 ">No countries found...</h2>
           }
           {filteredCountries.map(country => (
-            <li key={country.id} className="bg-white dark:bg-gray-400 w-[264px] rounded-md overflow-hidden drop-shadow-5xl">
-              <img src={country.flags.png} alt={country.flags.alt} className="h-[160px] w-[264px]" />
-              <div className="px-6 pt-6 pb-11 text-gray-900 dark:text-white">
-                <h2 className="font-sans font-extrabold text-lg mb-4">{country.name.common}</h2>
-                <div className="font-sans text-sm">
-                  <p>
-                    <span className="font-semibold">Population: </span>
-                    <span className="font-light">{formatNumber.format(country.population)}</span>
-                  </p>
-                  <p>
-                    <span className="font-semibold">Region: </span>
-                    <span className="font-light">{country.region}</span>
-                  </p>
-                  <p>
-                    <span className="font-semibold">Capital: </span>
-                    <span className="font-light">{country.capital}</span>
-                  </p>
+            <Link key={country.id} to={country.id.toLowerCase()}>
+              <li className="bg-white dark:bg-gray-400 w-[264px] rounded-md overflow-hidden drop-shadow-5xl">
+                <img src={country.flags.png} alt={country.flags.alt} className="h-[160px] w-[264px]" />
+                <div className="px-6 pt-6 pb-11 text-gray-900 dark:text-white">
+                  <h2 className="font-sans font-extrabold text-lg mb-4">{country.name.common}</h2>
+                  <div className="font-sans text-sm">
+                    <p>
+                      <span className="font-semibold">Population: </span>
+                      <span className="font-light">{formatNumber.format(country.population)}</span>
+                    </p>
+                    <p>
+                      <span className="font-semibold">Region: </span>
+                      <span className="font-light">{country.region}</span>
+                    </p>
+                    <p>
+                      <span className="font-semibold">Capital: </span>
+                      <span className="font-light">{country.capital}</span>
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </li>)
+              </li>
+            </Link>
+          )
           )}
         </ul>
       </div>
@@ -136,67 +139,94 @@ const Home = () => {
   )
 }
 
-const countryLoader = ({ params }) => {
-  console.log(params)
+const countryLoader = async ({ params }) => {
+  const response = await fetch(`https://restcountries.com/v3.1/alpha/${params.id}`)
+  const data = await response.json()
+  return data.map(country => ({
+    id: country.cca2,
+    name: country.name,
+    tld: country.tld,
+    currencies: country.currencies,
+    capital: country.capital,
+    region: country.region,
+    subRegion: country.subregion,
+    languages: country.languages,
+    borders: country.borders,
+    population: country.population,
+    continents: country.continents,
+    flags: country.flags
+  }))[0]
 }
 
 const Country = () => {
+  const countryData = useLoaderData()
+  const navigate = useNavigate()
+
+  const handleBackHome = () => navigate('/')
+
+  const nativeName = Object.keys(countryData.name.nativeName)[0]
+  const languages = Object.entries(countryData.languages).reduce((acc, item) => [...acc, item[1]], []).join(', ')
+  const currencies = Object.entries(countryData.currencies).reduce((acc, item) => [...acc, item[1].name], []).join(', ')
   return (
     <div className="px-7">
       <header className="mt-10 rounded-sm mb-16">
-        <button className="py-[6px] px-[24px] bg-white text-gray-900 dark:bg-gray-400 dark:text-white font-sans flex items-center gap-2 font-light drop-shadow-1xl shadow-xl">
+        <button className="py-[6px] px-[24px] bg-white text-gray-900 dark:bg-gray-400 dark:text-white font-sans flex items-center gap-2 font-light drop-shadow-1xl shadow-xl" onClick={handleBackHome}>
           <ArrowLeft size={18} className="dark:text-white" />
           Back
         </button>
       </header>
       <div className="grid">
-        <img src="https://flagcdn.com/w320/be.png" alt="The flag of Belgium is composed of three equal vertical bands of black, yellow and red." className="w-[320px] h-[229px] mb-11" />
+        <img src={countryData.flags.png} alt="The flag of Belgium is composed of three equal vertical bands of black, yellow and red." className="w-[320px] h-[229px] mb-11" />
         <div className="country-data">
-          <h2 className="font-sans font-extrabold  text-gray-900 dark:text-white text-2xl mb-4">Belgium</h2>
+          <h2 className="font-sans font-extrabold  text-gray-900 dark:text-white text-2xl mb-4">{countryData.name.common}</h2>
           <div className="text-sm text-gray-900 dark:text-white flex flex-col gap-2 mb-8">
             <p>
               <span className="font-semibold">Native Name: </span>
-              <span className="font-light">België</span>
+              <span className="font-light">{countryData.name.nativeName[nativeName].common}</span>
             </p>
             <p>
               <span className="font-semibold">Population: </span>
-              <span className="font-light">11,319,511</span>
+              <span className="font-light">{formatNumber.format(countryData.population)}</span>
             </p>
             <p>
               <span className="font-semibold">Region: </span>
-              <span className="font-light">Europe</span>
+              <span className="font-light">{countryData.region}</span>
             </p>
             <p>
               <span className="font-semibold">Sub Region: </span>
-              <span className="font-light">Western Europe</span>
+              <span className="font-light">{countryData.subRegion}</span>
             </p>
             <p>
               <span className="font-semibold">Capital: </span>
-              <span className="font-light">Brussels</span>
+              <span className="font-light">{countryData.capital}</span>
             </p>
           </div>
           <div className="text-sm text-gray-900 dark:text-white flex flex-col gap-2 mb-8">
             <p>
               <span className="font-semibold">Top Level Domain: </span>
-              <span className="font-light">.be</span>
+              <span className="font-light">{countryData.tld}</span>
             </p>
             <p>
               <span className="font-semibold">Currencies: </span>
-              <span className="font-light">Euro</span>
+              <span className="font-light">{currencies}</span>
             </p>
             <p>
               <span className="font-semibold">Languages: </span>
-              <span className="font-light">Dutch, French, German</span>
+              <span className="font-light">{languages}</span>
             </p>
           </div>
-          <div className="border-countries">
-            <h3 className="font-semibold text-base text-gray-900 dark:text-white mb-4">Border Countries:</h3>
-            <ul className="grid grid-cols-3 gap-[10px] mb-16 text-center">
-              <li className="dark:bg-gray-400 text-gray-900 dark:text-white py-[6px] rounded-sm font-light text-xs">France</li>
-              <li className="dark:bg-gray-400 text-gray-900 dark:text-white py-[6px]  rounded-sm font-light text-xs">Germany</li>
-              <li className="dark:bg-gray-400 text-gray-900 dark:text-white py-[6px] rounded-sm font-light text-xs">Netherlands</li>
-            </ul>
-          </div>
+          {countryData.borders &&
+            <div className="border-countries">
+              <h3 className="font-semibold text-base text-gray-900 dark:text-white mb-4">Border Countries:</h3>
+              <ul className="grid grid-cols-3 gap-[10px] mb-16 text-center">
+                {countryData.borders.map(country =>
+                  <Link key={country} to={`/rest-countries/${country.toLowerCase()}`}>
+                    <li className="dark:bg-gray-400 text-gray-900 dark:text-white py-[6px] rounded-sm font-light text-xs">{country}</li>
+                  </Link>
+                )}
+              </ul>
+            </div>
+          }
         </div>
       </div>
     </div >
