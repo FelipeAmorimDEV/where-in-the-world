@@ -64,20 +64,7 @@ const Home = () => {
     fetch('https://restcountries.com/v3.1/all')
       .then(r => r.json())
       .then(data => setCountries(data.map(countrie => (
-        {
-          id: countrie.cca2,
-          name: countrie.name,
-          tld: countrie.tld,
-          currencies: countrie.currencies,
-          capital: countrie.capital,
-          region: countrie.region,
-          subRegion: countrie.subregion,
-          languages: countrie.languages,
-          borders: countrie.borders,
-          population: countrie.population,
-          continents: countrie.continents,
-          flags: countrie.flags
-        }
+        { id: countrie.cca2, name: countrie.name, capital: countrie.capital, region: countrie.region, population: countrie.population, flags: countrie.flags }
       ))))
       .catch(error => alert(error.message))
       .finally(() => setLoading(null))
@@ -148,7 +135,6 @@ const countryLoader = async ({ params }) => {
 
   return data.length > 0
     ? data.map(country => ({
-      id: country.cca2,
       name: country.name,
       tld: country.tld,
       currencies: country.currencies,
@@ -158,7 +144,6 @@ const countryLoader = async ({ params }) => {
       languages: country.languages,
       borders: country.borders,
       population: country.population,
-      continents: country.continents,
       flags: country.flags,
       status: 'OK'
     }))[0]
@@ -186,7 +171,6 @@ const Country = () => {
 
       {status === 'OK'
         ? <div className="grid justify-center laptop:justify-normal laptop:grid-cols-2 laptop:gap-x-20 lg:gap-x-28">
-
           <img src={flags.png} alt={flags.alt ?? `${name.common} flag`} className="w-full max-w-[584px] mb-11 laptop:mb-0  col-start-1 justify-self-center rounded-md" width={584} />
           <div className="tablet:grid tablet:grid-cols-[auto,auto] gap-x-10">
             <h2 className="font-sans font-extrabold  text-gray-900 dark:text-white text-2xl mb-4 tablet:col-span-2 lg:mb-6 lg:text-3xl">{name.common}</h2>
@@ -244,7 +228,6 @@ const Country = () => {
           </div>
         </div >
         : <h2 className="mt-10 text-center text-gray-900 dark:text-white text-3xl ">Country not found</h2>
-
       }
     </>
   )
