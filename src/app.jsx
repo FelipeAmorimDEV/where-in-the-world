@@ -2,7 +2,8 @@ import { useEffect, useState } from "react"
 import { createBrowserRouter, createRoutesFromElements, Route, Outlet, RouterProvider, Link, Navigate, useLoaderData, useNavigate, useRouteError } from "react-router-dom"
 import { ArrowLeft, CaretDown, MagnifyingGlass, Moon } from "@phosphor-icons/react"
 
-const formatNumber = new Intl.NumberFormat('en-US')
+import formatNumber from "./utils/format-number"
+
 
 const DefaultLayout = () => {
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') ?? 'white')
