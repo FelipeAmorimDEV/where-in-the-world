@@ -107,39 +107,37 @@ const Home = () => {
           </select>
         </div>
       </header>
-      <div>
-        {loading && <h2 className="text-gray-900 dark:text-white font-bold text-2xl text-center">{loading}</h2>}
-        {!loading && countriesInAlphabeticOrder.length === 0 && search.length > 0 &&
-          <h2 className="font-sans font-bold text-red-500 text-center">No countries found...</h2>
-        }
-      </div>
-      <ul className="grid justify-items-center justify-center gap-10 list-none lg:grid-cols-4 laptop:grid-cols-[264px_264px_264px] laptop:gap-20 tablet:grid-cols-[264px_264px] tablet:gap-22 max-w-[1440px] mx-auto">
-        {countriesInAlphabeticOrder.map(country => (
-          <li key={country.id} className="bg-white dark:bg-gray-400 w-[264px] rounded-md overflow-hidden drop-shadow-5xl hover:-translate-y-5 hover:transition-all">
-            <Link to={country.id.toLowerCase()}>
-              <img src={country.flags.png} alt={country.flags.alt ?? `${country.name.common} flag`} className="h-[160px] w-[264px]" />
-              <div className="px-6 pt-6 pb-11 text-gray-900 dark:text-white">
-                <h2 className="font-sans font-extrabold text-lg mb-4">{country.name.common}</h2>
-                <div className="font-sans text-sm">
-                  <p>
-                    <span className="font-semibold">Population: </span>
-                    <span className="font-light">{formatNumber.format(country.population)}</span>
-                  </p>
-                  <p>
-                    <span className="font-semibold">Region: </span>
-                    <span className="font-light">{country.region}</span>
-                  </p>
-                  <p>
-                    <span className="font-semibold">Capital: </span>
-                    <span className="font-light">{country.capital}</span>
-                  </p>
+      {loading && <h2 className="text-gray-900 dark:text-white font-bold text-2xl text-center">{loading}</h2>}
+      {filteredCountries.length === 0 && search.length > 0
+        ? <h2 className="font-sans font-bold text-red-500 text-center">No countries found...</h2>
+        : <ul className="grid justify-items-center justify-center gap-10 list-none lg:grid-cols-4 laptop:grid-cols-[264px_264px_264px] laptop:gap-20 tablet:grid-cols-[264px_264px] tablet:gap-22 max-w-[1440px] mx-auto">
+          {countriesInAlphabeticOrder.map(country => (
+            <li key={country.id} className="bg-white dark:bg-gray-400 w-[264px] rounded-md overflow-hidden drop-shadow-5xl hover:-translate-y-5 hover:transition-all">
+              <Link to={country.id.toLowerCase()}>
+                <img src={country.flags.png} alt={country.flags.alt ?? `${country.name.common} flag`} className="h-[160px] w-[264px]" />
+                <div className="px-6 pt-6 pb-11 text-gray-900 dark:text-white">
+                  <h2 className="font-sans font-extrabold text-lg mb-4">{country.name.common}</h2>
+                  <div className="font-sans text-sm">
+                    <p>
+                      <span className="font-semibold">Population: </span>
+                      <span className="font-light">{formatNumber.format(country.population)}</span>
+                    </p>
+                    <p>
+                      <span className="font-semibold">Region: </span>
+                      <span className="font-light">{country.region}</span>
+                    </p>
+                    <p>
+                      <span className="font-semibold">Capital: </span>
+                      <span className="font-light">{country.capital}</span>
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          </li>
-        )
-        )}
-      </ul>
+              </Link>
+            </li>
+          )
+          )}
+        </ul>
+      }
     </>
   )
 }
