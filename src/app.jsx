@@ -162,14 +162,14 @@ const countryLoader = async ({ params }) => {
 }
 
 const Country = () => {
-  const countryData = useLoaderData()
+  const { name, languages, currencies, flags, population, region, subRegion, capital, tld, borders } = useLoaderData()
   const navigate = useNavigate()
 
   const handleBackHome = () => navigate('/')
 
-  const nativeName = Object.keys(countryData.name.nativeName)[0]
-  const languages = Object.entries(countryData.languages).reduce((acc, item) => [...acc, item[1]], []).join(', ')
-  const currencies = Object.entries(countryData.currencies).reduce((acc, item) => [...acc, item[1].name], []).join(', ')
+  const nativeName = Object.keys(name.nativeName)[0]
+  const languagesSeparatedByComma = Object.entries(languages).reduce((acc, item) => [...acc, item[1]], []).join(', ')
+  const currenciesSeparatedByComma = Object.entries(currencies).reduce((acc, item) => [...acc, item[1].name], []).join(', ')
 
   return (
     <>
@@ -181,50 +181,50 @@ const Country = () => {
       </header>
       <div className="grid justify-center laptop:justify-normal laptop:grid-cols-2 laptop:gap-x-20 lg:gap-x-28">
 
-        <img src={countryData.flags.png} alt={countryData.flags.alt ?? `${countryData.name.common} flag`} className="w-full max-w-[584px] mb-11 laptop:mb-0  col-start-1 justify-self-center rounded-md" width={584} />
+        <img src={flags.png} alt={flags.alt ?? `${name.common} flag`} className="w-full max-w-[584px] mb-11 laptop:mb-0  col-start-1 justify-self-center rounded-md" width={584} />
         <div className="tablet:grid tablet:grid-cols-[auto,auto] gap-x-10">
-          <h2 className="font-sans font-extrabold  text-gray-900 dark:text-white text-2xl mb-4 tablet:col-span-2 lg:mb-6 lg:text-3xl">{countryData.name.common}</h2>
+          <h2 className="font-sans font-extrabold  text-gray-900 dark:text-white text-2xl mb-4 tablet:col-span-2 lg:mb-6 lg:text-3xl">{name.common}</h2>
           <div className="text-sm text-gray-900 dark:text-white flex flex-col gap-2 mb-8 lg:mb-16 lg:text-base">
             <p>
               <span className="font-semibold">Native Name: </span>
-              <span className="font-light">{countryData.name.nativeName[nativeName].common}</span>
+              <span className="font-light">{name.nativeName[nativeName].common}</span>
             </p>
             <p>
               <span className="font-semibold">Population: </span>
-              <span className="font-light">{formatNumber.format(countryData.population)}</span>
+              <span className="font-light">{formatNumber.format(population)}</span>
             </p>
             <p>
               <span className="font-semibold">Region: </span>
-              <span className="font-light">{countryData.region}</span>
+              <span className="font-light">{region}</span>
             </p>
             <p>
               <span className="font-semibold">Sub Region: </span>
-              <span className="font-light">{countryData.subRegion}</span>
+              <span className="font-light">{subRegion}</span>
             </p>
             <p>
               <span className="font-semibold">Capital: </span>
-              <span className="font-light">{countryData.capital}</span>
+              <span className="font-light">{capital}</span>
             </p>
           </div>
           <div className="text-sm text-gray-900 dark:text-white flex flex-col gap-2 mb-8 lg:text-base">
             <p>
               <span className="font-semibold">Top Level Domain: </span>
-              <span className="font-light">{countryData.tld}</span>
+              <span className="font-light">{tld}</span>
             </p>
             <p>
               <span className="font-semibold">Currencies: </span>
-              <span className="font-light">{currencies}</span>
+              <span className="font-light">{currenciesSeparatedByComma}</span>
             </p>
             <p>
               <span className="font-semibold">Languages: </span>
-              <span className="font-light">{languages}</span>
+              <span className="font-light">{languagesSeparatedByComma}</span>
             </p>
           </div>
-          {countryData.borders &&
+          {borders &&
             <div className="tablet:grid tablet:grid-cols-[140px,1fr] items-start gap-4 col-span-2">
               <p className="font-semibold text-base text-gray-900 dark:text-white mb-4">Border Countries:</p>
               <ul className="gap-[10px] mb-16 text-center lg:mb-0 grid grid-cols-4">
-                {countryData.borders.map(country =>
+                {borders.map(country =>
                   <li key={country} className="dark:bg-gray-400 text-gray-900 dark:text-white py-[6px] rounded-sm font-light text-xs tablet:text-sm">
                     <Link to={`/rest-countries/${country.toLowerCase()}`}>
                       {country}
