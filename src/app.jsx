@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { createBrowserRouter, createRoutesFromElements, Route, Outlet, RouterProvider, Link, Navigate, useLoaderData, useNavigate } from "react-router-dom"
+import { createBrowserRouter, createRoutesFromElements, Route, Outlet, RouterProvider, Link, Navigate, useLoaderData, useNavigate, useRouteError } from "react-router-dom"
 import { ArrowLeft, CaretDown, MagnifyingGlass, Moon } from "@phosphor-icons/react"
 
 const formatNumber = new Intl.NumberFormat('en-US')
@@ -257,13 +257,26 @@ const NotFound = () =>
     <Link to="/" className="px-4 py-2 bg-gray-400 text-white rounded-md text-lg font-bold hover:bg-opacity-0 hover:border hover:border-gray-900 hover:text-gray-900 dark:hover:text-white">Go Home</Link>
   </div>
 
+const ErrorElement = () => {
+  const error = useRouteError()
+  return (
+    <div className="mt-32 text-center text-gray-900 dark:text-white">
+      <h2 className="font-bold text-9xl">Oops!</h2>
+      <p className="text-3xl mt-3 mb-5">Sorry, an unexpected error occurred:</p>
+      <p className="text-gray-900 dark:text-white text-lg font-bold">{error.message}</p>
+    </div>
+  )
+}
+
 const routes = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<DefaultLayout />} >
-      <Route index element={<Navigate to="/rest-countries" />} />
-      <Route path="rest-countries" element={<Home />} />
-      <Route path="rest-countries/:id" element={<Country />} loader={countryLoader} />
-      <Route path="*" element={<NotFound />} />
+    <Route path="/" element={<DefaultLayout />}>
+      <Route errorElement={<ErrorElement />}>
+        <Route index element={<Navigate to="/rest-countries" />} />
+        <Route path="rest-countries" element={<Home />} />
+        <Route path="rest-countries/:id" element={<Country />} loader={countryLoader} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
     </Route>
   )
 )
