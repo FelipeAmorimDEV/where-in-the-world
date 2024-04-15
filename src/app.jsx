@@ -39,7 +39,7 @@ const DefaultLayout = () => {
           </button>
         </div >
       </header>
-      <main role="main">
+      <main role="main" className="max-w-[1440px] mx-auto px-7 lg:px-[80px] tablet:mb-32">
         <Outlet />
       </main>
     </>
@@ -87,61 +87,58 @@ const Home = () => {
 
   return (
     <>
-      <div className="max-w-[1440px] mx-auto">
-        <header className="mt-6 mb-8 flex flex-col gap-10 px-4 lg:flex-row lg:justify-between tablet:my-12 lg:px-[80px]">
-          <label className="relative drop-shadow-4xl shadow-xl" aria-label="search country by name">
-            <MagnifyingGlass size={18} weight="bold" className="absolute top-[16px] left-[30px] text-gray-900 dark:text-white" />
-            <input value={search} onChange={handleChangeSearch} type="text" placeholder="Search for a country…" className="py-[14px] px-[74px] font-sans 
+      <header className="mt-6 mb-8 flex flex-col gap-10 lg:flex-row lg:justify-between tablet:my-12">
+        <label className="relative drop-shadow-4xl shadow-xl" aria-label="search country by name">
+          <MagnifyingGlass size={18} weight="bold" className="absolute top-[16px] left-[30px] text-gray-900 dark:text-white" />
+          <input value={search} onChange={handleChangeSearch} type="text" placeholder="Search for a country…" className="py-[14px] px-[74px] font-sans 
             bg-white text-gray-900 dark:bg-gray-400 dark:text-white outline-none rounded-md w-full lg:w-[480px] text-xs tablet:text-sm" />
-          </label>
-          <div className="relative w-52">
-            <CaretDown size={10} weight="bold" className="absolute top-[15px] right-[19px] text-gray-900 dark:text-white" />
-            <select value={regionOption} onChange={handleChangeRegion} name="region" aria-label="filter by region" className="py-3 px-6 font-sans rounded-md bg-white text-gray-900 dark:bg-gray-400 dark:text-white text-xs outline-none w-full drop-shadow-4xl shadow-xl tablet:text-sm">
-              <option value="all" disabled hidden>Filter by Region</option>
-              <option value="all">All</option>
-              <option value="africa">Africa</option>
-              <option value="americas">Americas</option>
-              <option value="asia">Asia</option>
-              <option value="europe">Europe</option>
-              <option value="oceania">Oceania</option>
-            </select>
-          </div>
-        </header>
-      </div>
-
+        </label>
+        <div className="relative w-52">
+          <CaretDown size={10} weight="bold" className="absolute top-[15px] right-[19px] text-gray-900 dark:text-white" />
+          <select value={regionOption} onChange={handleChangeRegion} name="region" aria-label="filter by region" className="py-3 px-6 font-sans rounded-md bg-white text-gray-900 dark:bg-gray-400 dark:text-white text-xs outline-none w-full drop-shadow-4xl shadow-xl tablet:text-sm">
+            <option value="all" disabled hidden>Filter by Region</option>
+            <option value="all">All</option>
+            <option value="africa">Africa</option>
+            <option value="americas">Americas</option>
+            <option value="asia">Asia</option>
+            <option value="europe">Europe</option>
+            <option value="oceania">Oceania</option>
+          </select>
+        </div>
+      </header>
       <div>
         {loading && <h2 className="text-gray-900 dark:text-white font-bold text-2xl text-center">{loading}</h2>}
         {!loading && filteredCountries.length === 0 && search.length > 0 &&
           <h2 className="font-sans font-bold text-red-500 text-center">No countries found...</h2>
         }
-        <ul className="grid justify-items-center justify-center gap-10 list-none lg:grid-cols-4 laptop:grid-cols-[264px_264px_264px] laptop:gap-20 tablet:grid-cols-[264px_264px] tablet:gap-22 lg:px-[80px] max-w-[1440px] mx-auto">
-          {filteredCountries.map(country => (
-            <li key={country.id} className="bg-white dark:bg-gray-400 w-[264px] rounded-md overflow-hidden drop-shadow-5xl hover:-translate-y-5 hover:transition-all">
-              <Link to={country.id.toLowerCase()}>
-                <img src={country.flags.png} alt={country.flags.alt ?? `${country.name.common} flag`} className="h-[160px] w-[264px]" />
-                <div className="px-6 pt-6 pb-11 text-gray-900 dark:text-white">
-                  <h2 className="font-sans font-extrabold text-lg mb-4">{country.name.common}</h2>
-                  <div className="font-sans text-sm">
-                    <p>
-                      <span className="font-semibold">Population: </span>
-                      <span className="font-light">{formatNumber.format(country.population)}</span>
-                    </p>
-                    <p>
-                      <span className="font-semibold">Region: </span>
-                      <span className="font-light">{country.region}</span>
-                    </p>
-                    <p>
-                      <span className="font-semibold">Capital: </span>
-                      <span className="font-light">{country.capital}</span>
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            </li>
-          )
-          )}
-        </ul>
       </div>
+      <ul className="grid justify-items-center justify-center gap-10 list-none lg:grid-cols-4 laptop:grid-cols-[264px_264px_264px] laptop:gap-20 tablet:grid-cols-[264px_264px] tablet:gap-22 max-w-[1440px] mx-auto">
+        {filteredCountries.map(country => (
+          <li key={country.id} className="bg-white dark:bg-gray-400 w-[264px] rounded-md overflow-hidden drop-shadow-5xl hover:-translate-y-5 hover:transition-all">
+            <Link to={country.id.toLowerCase()}>
+              <img src={country.flags.png} alt={country.flags.alt ?? `${country.name.common} flag`} className="h-[160px] w-[264px]" />
+              <div className="px-6 pt-6 pb-11 text-gray-900 dark:text-white">
+                <h2 className="font-sans font-extrabold text-lg mb-4">{country.name.common}</h2>
+                <div className="font-sans text-sm">
+                  <p>
+                    <span className="font-semibold">Population: </span>
+                    <span className="font-light">{formatNumber.format(country.population)}</span>
+                  </p>
+                  <p>
+                    <span className="font-semibold">Region: </span>
+                    <span className="font-light">{country.region}</span>
+                  </p>
+                  <p>
+                    <span className="font-semibold">Capital: </span>
+                    <span className="font-light">{country.capital}</span>
+                  </p>
+                </div>
+              </div>
+            </Link>
+          </li>
+        )
+        )}
+      </ul>
     </>
   )
 }
@@ -174,18 +171,20 @@ const Country = () => {
   const nativeName = Object.keys(countryData.name.nativeName)[0]
   const languages = Object.entries(countryData.languages).reduce((acc, item) => [...acc, item[1]], []).join(', ')
   const currencies = Object.entries(countryData.currencies).reduce((acc, item) => [...acc, item[1].name], []).join(', ')
+
   return (
-    <div className="px-7">
+    <>
       <header className="mt-10 rounded-sm mb-16 lg:my-20">
         <button className="py-[6px] px-[24px] bg-white text-gray-900 dark:bg-gray-400 dark:text-white font-sans flex items-center gap-2 font-light drop-shadow-1xl shadow-xl" onClick={handleBackHome}>
           <ArrowLeft size={18} className="dark:text-white" />
           Back
         </button>
       </header>
-      <div className="grid lg:grid-cols-[560px_574px] lg:items-center lg:gap-28 lg:mb-52 lg:justify-center">
-        <img src={countryData.flags.png} alt={countryData.flags.alt ?? `${countryData.name.common} flag`} className="w-[320px] h-[229px] mb-11 lg:w-[560px] lg:h-[401px]" />
-        <div className="lg:grid lg:grid-cols-[auto,auto] w-[574px]">
-          <h2 className="font-sans font-extrabold  text-gray-900 dark:text-white text-2xl mb-4 lg:col-span-2 lg:mb-6 lg:text-3xl">{countryData.name.common}</h2>
+      <div className="grid justify-center laptop:justify-normal laptop:grid-cols-2 laptop:gap-x-20 lg:gap-x-28">
+
+        <img src={countryData.flags.png} alt={countryData.flags.alt ?? `${countryData.name.common} flag`} className="w-full max-w-[584px] mb-11 laptop:mb-0  col-start-1 justify-self-center rounded-md" width={584} />
+        <div className="tablet:grid tablet:grid-cols-[auto,auto] gap-x-10">
+          <h2 className="font-sans font-extrabold  text-gray-900 dark:text-white text-2xl mb-4 tablet:col-span-2 lg:mb-6 lg:text-3xl">{countryData.name.common}</h2>
           <div className="text-sm text-gray-900 dark:text-white flex flex-col gap-2 mb-8 lg:mb-16 lg:text-base">
             <p>
               <span className="font-semibold">Native Name: </span>
@@ -223,20 +222,23 @@ const Country = () => {
             </p>
           </div>
           {countryData.borders &&
-            <div className="border-countries gap-4 lg:grid lg:grid-cols-[auto_auto] items-baseline col-span-2">
-              <h3 className="font-semibold text-base text-gray-900 dark:text-white mb-4 lg:mb-0">Border Countries:</h3>
-              <ul className="grid grid-cols-3 gap-[10px] mb-16 text-center  lg:mb-0 lg:flex lg:flex-wrap ">
+            <div className="tablet:grid tablet:grid-cols-[140px,1fr] items-start gap-4 col-span-2">
+              <p className="font-semibold text-base text-gray-900 dark:text-white mb-4">Border Countries:</p>
+              <ul className="gap-[10px] mb-16 text-center lg:mb-0 grid grid-cols-4">
                 {countryData.borders.map(country =>
-                  <Link key={country} to={`/rest-countries/${country.toLowerCase()}`}>
-                    <li className="dark:bg-gray-400 text-gray-900 dark:text-white py-[6px] rounded-sm font-light text-xs lg:text-sm lg:w-[96px]">{country}</li>
-                  </Link>
+                  <li key={country} className="dark:bg-gray-400 text-gray-900 dark:text-white py-[6px] rounded-sm font-light text-xs tablet:text-sm">
+                    <Link to={`/rest-countries/${country.toLowerCase()}`}>
+                      {country}
+                    </Link>
+                  </li>
+
                 )}
               </ul>
             </div>
           }
         </div>
-      </div>
-    </div >
+      </div >
+    </>
   )
 }
 
