@@ -54,9 +54,10 @@ const Home = () => {
 
   const filteredCountriesByRegion = countries
     .filter(({ region }) => regionOption === 'all' ? true : region.toLowerCase() === regionOption)
-  const filteredCountries = filteredCountriesByRegion.filter(({ name, capital, region }) => {
-    return `${name.common}${capital}${region}`.toLowerCase().includes(search.toLowerCase())
-  })
+  const filteredCountries = filteredCountriesByRegion
+    .filter(({ name, capital, region }) => `${name.common}${capital}${region}`.toLowerCase().includes(search.toLowerCase()))
+  const countriesInAlphabeticOrder = filteredCountries
+    .sort((a, b) => a.name.common < b.name.common ? -1 : a.name.common > b.name.common ? 1 : 0)
 
   useEffect(() => {
     setLoading('Loading...')
@@ -108,12 +109,12 @@ const Home = () => {
       </header>
       <div>
         {loading && <h2 className="text-gray-900 dark:text-white font-bold text-2xl text-center">{loading}</h2>}
-        {!loading && filteredCountries.length === 0 && search.length > 0 &&
+        {!loading && countriesInAlphabeticOrder.length === 0 && search.length > 0 &&
           <h2 className="font-sans font-bold text-red-500 text-center">No countries found...</h2>
         }
       </div>
       <ul className="grid justify-items-center justify-center gap-10 list-none lg:grid-cols-4 laptop:grid-cols-[264px_264px_264px] laptop:gap-20 tablet:grid-cols-[264px_264px] tablet:gap-22 max-w-[1440px] mx-auto">
-        {filteredCountries.map(country => (
+        {countriesInAlphabeticOrder.map(country => (
           <li key={country.id} className="bg-white dark:bg-gray-400 w-[264px] rounded-md overflow-hidden drop-shadow-5xl hover:-translate-y-5 hover:transition-all">
             <Link to={country.id.toLowerCase()}>
               <img src={country.flags.png} alt={country.flags.alt ?? `${country.name.common} flag`} className="h-[160px] w-[264px]" />
